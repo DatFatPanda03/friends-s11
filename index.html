@@ -181,6 +181,14 @@
     color: var(--accent); text-align: center;
     margin: 3.5rem 0 2rem; padding-top: 1.75rem; border-top: 1px solid var(--rule);
   }
+  .scenenum {
+    display: flex; align-items: center; gap: .6rem;
+    font-family: var(--sans); font-size: .625rem; font-weight: 700;
+    letter-spacing: .2em; text-transform: uppercase; color: var(--faint);
+    margin: 2.75rem 0 1.25rem;
+  }
+  .scenenum::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+  .scenenum + .stage { margin-top: 0; }
   .stage {
     font-family: var(--mono); font-size: .8125em; line-height: 1.6; font-style: italic;
     color: var(--muted); margin: 1.75rem 0; padding-left: .875rem;
@@ -243,6 +251,7 @@
 
   var lines = md.split("\n");
   var html = [], toc = [], blockIdx = 0, act = "Teaser";
+  var pendNum = null, pendIdx = null;
   var title = "", ep = "", note = "";
 
   function push(tag, cls, body) {
@@ -254,23 +263,35 @@
     var L = lines[i].trim();
     if (!L) continue;
 
-    if (L.indexOf("# ") === 0 || L.indexOf("## ") === 0) {
-      var t = L.replace(/^#+\s*/, "");
-      if (i < 6) {
+    var head = L.match(/^(#{1,6})\s+(.+?)\s*#*$/);
+    if (head) {
+      var lvl = head[1].length, t = head[2];
+      if (i < 6 && lvl <= 2) {
         if (t === "FRIENDS") continue;
         if (/^Season/i.test(t)) { ep = t; continue; }
         title = t.replace(/^"|"$/g, ""); continue;
       }
-      act = t;
-      toc.push({ act: 1, label: t, i: blockIdx });
-      push("h2", "act", esc(t));
+      if (lvl <= 2) {
+        act = t;
+        toc.push({ act: 1, label: t, i: blockIdx });
+        push("h2", "act", esc(t));
+      } else {
+        /* "### SCENE 7" -- the script's own numbering, kept as the scene's label */
+        var num = t.match(/(\d+)/);
+        pendNum = num ? num[1] : null;
+        pendIdx = blockIdx;
+        push("p", "scenenum", esc(t.replace(/^SCENE\s+/i, "Scene ")));
+      }
       continue;
     }
     if (L === "---") { html.push("<hr>"); continue; }
     if (L.indexOf("**[") === 0) {
       var body = L.replace(/^\*\*\[/, "").replace(/\]\*\*$/, "");
       var scene = body.match(/^Scene:\s*(.+?)[.\u2026]/);
-      if (scene) toc.push({ act: 0, label: scene[1], i: blockIdx });
+      if (scene) {
+        toc.push({ act: 0, num: pendNum, label: scene[1], i: pendIdx === null ? blockIdx : pendIdx });
+        pendNum = null; pendIdx = null;
+      }
       push("p", "stage", inline(body));
       continue;
     }
@@ -307,7 +328,8 @@
     if (t.act) b.textContent = t.label;
     else {
       n++;
-      b.innerHTML = "<span>" + n + "</span><span>" + t.label.replace(/&/g, "&amp;").replace(/</g, "&lt;") + "</span>";
+      b.innerHTML = "<span>" + (t.num || "\u00b7") + "</span><span>" +
+        t.label.replace(/&/g, "&amp;").replace(/</g, "&lt;") + "</span>";
     }
     tocEl.appendChild(b);
   });
