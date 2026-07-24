@@ -1,0 +1,404 @@
+<title>The One After Rachel Got Off the Plane</title>
+
+<style>
+  :root {
+    --ground: #F6F2F4;
+    --raise: #FFFFFF;
+    --ink: #241B26;
+    --muted: #6E6172;
+    --faint: #8C8090;
+    --rule: #E4DAE3;
+    --accent: #7A3E8F;
+    --accent-soft: #F0E5F3;
+    --gold: #C98A1F;
+    --shadow: 0 6px 28px rgba(36, 27, 38, .13);
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --size: 1.0625rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #17121A;
+      --raise: #211A25;
+      --ink: #EDE6EE;
+      --muted: #9E92A3;
+      --faint: #857A8A;
+      --rule: #322936;
+      --accent: #C08BD6;
+      --accent-soft: #2C2032;
+      --gold: #E0A93F;
+      --shadow: 0 6px 28px rgba(0, 0, 0, .5);
+    }
+  }
+  :root[data-theme="light"] {
+    --ground: #F6F2F4; --raise: #FFFFFF; --ink: #241B26; --muted: #6E6172;
+    --faint: #8C8090; --rule: #E4DAE3; --accent: #7A3E8F; --accent-soft: #F0E5F3;
+    --gold: #C98A1F; --shadow: 0 6px 28px rgba(36, 27, 38, .13);
+  }
+  :root[data-theme="dark"] {
+    --ground: #17121A; --raise: #211A25; --ink: #EDE6EE; --muted: #9E92A3;
+    --faint: #857A8A; --rule: #322936; --accent: #C08BD6; --accent-soft: #2C2032;
+    --gold: #E0A93F; --shadow: 0 6px 28px rgba(0, 0, 0, .5);
+  }
+  :root[data-size="s"] { --size: .9375rem; }
+  :root[data-size="l"] { --size: 1.1875rem; }
+  :root[data-size="xl"] { --size: 1.375rem; }
+
+  html { -webkit-text-size-adjust: 100%; scroll-padding-top: 5.5rem; }
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: var(--size);
+    line-height: 1.62;
+    margin: 0;
+    overflow-wrap: break-word;
+  }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+
+  /* ---- header ---- */
+  header {
+    position: fixed; inset: 0 0 auto 0; z-index: 40;
+    background: color-mix(in srgb, var(--ground) 88%, transparent);
+    backdrop-filter: saturate(1.4) blur(14px);
+    -webkit-backdrop-filter: saturate(1.4) blur(14px);
+    border-bottom: 1px solid var(--rule);
+    padding-top: env(safe-area-inset-top);
+  }
+  .bar {
+    display: flex; align-items: center; gap: .5rem;
+    max-width: 40rem; margin: 0 auto; padding: .5rem .75rem;
+  }
+  .where {
+    flex: 1; min-width: 0;
+    font-family: var(--sans); font-size: .6875rem; font-weight: 600;
+    letter-spacing: .09em; text-transform: uppercase; color: var(--muted);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .pct { font-family: var(--sans); font-size: .6875rem; font-weight: 600; color: var(--faint); font-variant-numeric: tabular-nums; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+  .icon {
+    width: 2rem; height: 2rem; flex: none; border-radius: 999px;
+    display: grid; place-items: center;
+    font-family: var(--sans); font-size: .75rem; font-weight: 700;
+    color: var(--muted); border: 1px solid var(--rule); background: var(--raise);
+  }
+  .icon:hover { color: var(--accent); border-color: var(--accent); }
+  .icon svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+
+  .rail { height: 3px; background: var(--rule); position: relative; }
+  .rail > i { position: absolute; inset: 0 auto 0 0; background: var(--gold); width: 0; transition: width .18s linear; }
+  .rail > b { position: absolute; top: -2px; width: 2px; height: 7px; background: var(--accent); opacity: 0; }
+
+  /* ---- scene sheet ---- */
+  .sheet {
+    position: fixed; z-index: 39; inset: 0 0 0 0;
+    background: color-mix(in srgb, var(--ground) 70%, transparent);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    display: none;
+  }
+  .sheet[data-open="1"] { display: block; }
+  .sheet nav {
+    position: absolute; inset: auto 0 0 0; max-height: 72vh; overflow-y: auto;
+    background: var(--raise); border-top: 1px solid var(--rule);
+    box-shadow: var(--shadow); border-radius: 16px 16px 0 0;
+    padding: .75rem .5rem calc(1.25rem + env(safe-area-inset-bottom));
+    -webkit-overflow-scrolling: touch;
+  }
+  .sheet nav > div { max-width: 40rem; margin: 0 auto; display: flex; flex-direction: column; gap: 1px; }
+  .sheet button {
+    display: flex; gap: .75rem; align-items: baseline; width: 100%; text-align: left;
+    padding: .6rem .75rem; border-radius: 8px; font-family: var(--sans); font-size: .875rem; line-height: 1.35;
+  }
+  .sheet button:hover { background: var(--accent-soft); }
+  .sheet button[data-act="1"] {
+    font-size: .6875rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--accent); padding-top: 1rem;
+  }
+  .sheet button > span:first-child { color: var(--faint); font-variant-numeric: tabular-nums; font-size: .75rem; flex: none; width: 1.75rem; }
+  .sheet button[data-read="1"] > span:first-child { color: var(--gold); }
+
+  /* ---- resume pill ---- */
+  .resume {
+    position: fixed; z-index: 38; left: 50%; transform: translate(-50%, 1.5rem);
+    bottom: calc(1rem + env(safe-area-inset-bottom));
+    display: flex; align-items: center; gap: .5rem;
+    padding: .6rem 1rem; border-radius: 999px;
+    background: var(--accent); color: var(--ground);
+    font-family: var(--sans); font-size: .8125rem; font-weight: 600;
+    box-shadow: var(--shadow); opacity: 0; pointer-events: none;
+    transition: opacity .2s ease, transform .2s ease;
+  }
+  :root[data-theme="dark"] .resume, :root:not([data-theme]) .resume { color: #17121A; }
+  @media (prefers-color-scheme: light) { :root:not([data-theme]) .resume { color: #FFFFFF; } }
+  :root[data-theme="light"] .resume { color: #FFFFFF; }
+  .resume[data-show="1"] { opacity: 1; pointer-events: auto; transform: translate(-50%, 0); }
+
+  /* ---- script body ---- */
+  main {
+    max-width: 34rem; margin: 0 auto;
+    padding: 5.25rem 1.25rem 60vh;
+    padding-left: max(1.25rem, env(safe-area-inset-left));
+    padding-right: max(1.25rem, env(safe-area-inset-right));
+  }
+  .titleblock { margin-bottom: 3rem; text-align: center; }
+  .titleblock .show {
+    font-family: var(--sans); font-size: .75rem; font-weight: 700;
+    letter-spacing: .48em; text-indent: .48em; text-transform: uppercase; color: var(--accent);
+    margin: 0 0 1.25rem;
+  }
+  .titleblock h1 {
+    font-family: var(--serif); font-weight: 400; font-size: 1.9rem; line-height: 1.2;
+    text-wrap: balance; margin: 0 0 .75rem; font-style: italic;
+  }
+  .titleblock .ep, .titleblock .note {
+    font-family: var(--sans); font-size: .75rem; color: var(--muted); margin: 0;
+  }
+  .titleblock .ep { letter-spacing: .1em; text-transform: uppercase; margin-bottom: .5rem; }
+  .titleblock .note { font-style: italic; margin-top: .75rem; }
+
+  h2.act {
+    font-family: var(--sans); font-size: .6875rem; font-weight: 700;
+    letter-spacing: .28em; text-indent: .28em; text-transform: uppercase;
+    color: var(--accent); text-align: center;
+    margin: 3.5rem 0 2rem; padding-top: 1.75rem; border-top: 1px solid var(--rule);
+  }
+  .stage {
+    font-family: var(--mono); font-size: .8125em; line-height: 1.6; font-style: italic;
+    color: var(--muted); margin: 1.75rem 0; padding-left: .875rem;
+    border-left: 2px solid var(--rule);
+  }
+  .line { margin: 1.25rem 0; }
+  .cue {
+    display: block; font-family: var(--mono); font-size: .6875em; font-weight: 700;
+    letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+    margin-bottom: .1rem;
+  }
+  .line p { margin: 0; }
+  .line em, .stage em { font-style: italic; }
+  .line em.paren { color: var(--muted); font-family: var(--mono); font-size: .8em; }
+  hr { border: 0; height: 1px; background: var(--rule); margin: 2.5rem auto; width: 4rem; }
+  .plain { margin: 1.25rem 0; color: var(--muted); font-style: italic; }
+  .end {
+    font-family: var(--sans); font-size: .6875rem; font-weight: 700; letter-spacing: .28em;
+    text-transform: uppercase; text-align: center; color: var(--faint); margin: 3rem 0 0;
+  }
+  .mark { position: relative; }
+  .mark::before {
+    content: ""; position: absolute; left: -1.25rem; top: .35em;
+    width: 3px; height: 1.2em; border-radius: 2px; background: var(--gold);
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } html { scroll-behavior: auto !important; } }
+</style>
+
+<header>
+  <div class="bar">
+    <button class="icon" id="menu" aria-label="Jump to a scene"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button>
+    <span class="where" id="where">The One After Rachel Got Off the Plane</span>
+    <span class="pct" id="pct">0%</span>
+    <button class="icon" id="type" aria-label="Change text size">Aa</button>
+  </div>
+  <div class="rail"><i id="fill"></i><b id="mk"></b></div>
+</header>
+
+<div class="sheet" id="sheet" role="dialog" aria-label="Scenes" aria-modal="true"><nav><div id="toc"></div></nav></div>
+
+<button class="resume" id="resume" data-show="0">Back to your spot</button>
+
+<main id="doc"></main>
+
+<script>
+(function () {
+  var KEY = "friends-s11e01-progress";
+  var doc = document.getElementById("doc");
+  var md = "# FRIENDS\n## Season 11, Episode 1\n# \"The One After Rachel Got Off the Plane\"\n\n*Transcribed from the episode. Picks up the morning after \"The Last One, Part 2.\"*\n\n---\n\n## TEASER\n\n**[Scene: Ross's apartment. Morning. Sunlight through the blinds. ROSS and RACHEL are in bed, both awake, both staring at the ceiling, both grinning like idiots.]**\n\n**ROSS:** You got off the plane.\n\n**RACHEL:** I got off the plane.\n\n**ROSS:** You got off the plane.\n\n**RACHEL:** Honey, we've been doing this since four in the morning.\n\n**ROSS:** I know! I know. It's just \u2014 every time I say it, it's still true. It's like a magic trick that keeps working. *(beat)* You got off the plane!\n\n**RACHEL:** *(laughing)* Okay!\n\n**[She rolls over, propping herself up on an elbow.]**\n\n**RACHEL:** Ross. Can I ask you something?\n\n**ROSS:** Anything. Ask me anything. Ask me a hundred things.\n\n**RACHEL:** What am I wearing tomorrow?\n\n**ROSS:** *(a beat, then sincerely)* I mean, personally, I'm a big fan of what you're wearing right now\u2014\n\n**RACHEL:** Ross. Everything I own is on a boat.\n\n**ROSS:** ...What?\n\n**RACHEL:** A boat! To France! I packed my entire life into a shipping container and mailed it to a country I am no longer in! *(sitting up)* I have my purse. I have the clothes I flew in. And I have a duty-free Toblerone.\n\n**ROSS:** Okay, well \u2014 that's \u2014 that's not nothing. That's a big Toblerone.\n\n**RACHEL:** Ross, I don't have a job. I don't have an apartment. I don't have *pants.*\n\n**ROSS:** *(a beat too long. Then, quietly)* You have me.\n\n**[She looks at him. Everything softens.]**\n\n**RACHEL:** ...I have you.\n\n**ROSS:** *(nodding, warm)* You have me.\n\n**[Beat.]**\n\n**RACHEL:** Do you have pants?\n\n**ROSS:** I have *so many* pants.\n\n**[OPENING CREDITS]**\n\n---\n\n## ACT ONE\n\n### SCENE 1\n\n**[Scene: Central Perk. JOEY is on the couch eating a muffin with his hands like an animal. PHOEBE sits beside him with a clipboard, very official.]**\n\n**PHOEBE:** Okay. Attendance. Joey.\n\n**JOEY:** Here.\n\n**PHOEBE:** *(making a mark)* Ross and Rachel are late, which is a demerit each. Mike is in Connecticut, which is an excused absence. And Monica and Chandler are in Westchester, which is *also* basically Connecticut.\n\n**JOEY:** Pheebs. What is that?\n\n**PHOEBE:** It's the schedule, Joey.\n\n**JOEY:** What schedule?\n\n**PHOEBE:** *(as if to a child)* Monica's gone. Somebody has to make us do stuff. *(beat)* Joey, do you know why we saw each other every single day for ten years? It wasn't love. It was proximity, and a controlling woman.\n\n**JOEY:** That's not true.\n\n**PHOEBE:** Name one time we made a plan.\n\n**JOEY:** *(opens mouth. Closes it.)* ...I'm listening.\n\n**PHOEBE:** *(flipping the clipboard around)* I've assigned everyone a day. Mondays are Joey. Tuesdays are Ross \u2014 Ross doesn't know yet, Ross is going to have opinions. Wednesdays are Rachel. Thursdays are Monica and Chandler, because they have to drive in, and Thursday is a nothing day, so they won't feel bad about wasting it.\n\n**JOEY:** What about Friday?\n\n**PHOEBE:** Friday is me.\n\n**JOEY:** What do we do on Fridays?\n\n**PHOEBE:** *(gestures at the couch, the coffee, the two of them)* This. Exactly this. Fridays are already perfect. Don't touch Fridays.\n\n**[JOEY nods, genuinely moved.]**\n\n**JOEY:** ...I love Fridays.\n\n**PHOEBE:** *(making a mark)* Noted.\n\n**[Beat.]**\n\n**PHOEBE:** Oh \u2014 also, I can't fly anymore.\n\n**JOEY:** What?\n\n**PHOEBE:** I can't fly. On planes. In America.\n\n**JOEY:** Why not?\n\n**PHOEBE:** Because I told an airplane full of strangers that its left phalange was broken. Apparently that's a *federal* thing? There were two men waiting outside my apartment. They had a folder. With my picture in it. *(proud)* It was a really good picture.\n\n**JOEY:** You're on the no-fly list?!\n\n**PHOEBE:** Joey, I'm on *four* lists. This is just the first one with an airplane on it. *(sipping coffee)* Mike had to call a lawyer. Mike knows lawyers. It is the sexiest thing about him. *(beat)* It is not the sexiest thing about him.\n\n**[The door opens. ROSS and RACHEL enter, holding hands, radiating. RACHEL is wearing a men's button-down shirt about four sizes too big, sleeves rolled.]**\n\n**ROSS:** *(announcing to the entire coffee house)* Good morning, everyone!\n\n**JOEY:** Hey!\n\n**PHOEBE:** *(checking her watch, making a mark)* Demerit. Demerit.\n\n**RACHEL:** *(seeing the clipboard)* What is happening.\n\n**PHOEBE:** It's Thursday, Rachel. Thursdays are Monica and Chandler. You're a *guest* today.\n\n**RACHEL:** *(to Ross)* I've been back nine hours.\n\n**[They sit. JOEY squints at RACHEL.]**\n\n**JOEY:** Rach. Whose shirt is that?\n\n**RACHEL:** It's Ross's.\n\n**JOEY:** *(nodding slowly, then)* Why?\n\n**RACHEL:** Because everything I own is currently in the middle of the Atlantic Ocean.\n\n**ROSS:** *(unable to stop himself)* It looks *really* good on you.\n\n**RACHEL:** It's a shirt, Ross.\n\n**ROSS:** It's *my* shirt.\n\n**RACHEL:** I know.\n\n**ROSS:** *(to Joey, quietly, thrilled)* It's my shirt.\n\n**JOEY:** So?! So?! Tell it! Tell the whole thing! I fell asleep during the good part!\n\n**ROSS:** *(leaning in, hands out, cinematic)* Okay. Okay. So. I'm sprinting \u2014 full sprint \u2014 through Terminal C\u2014\n\n**PHOEBE:** You were in a cab. You called me *from a cab.*\n\n**ROSS:** I sprinted *to* the cab.\n\n**RACHEL:** You *walked* to the cab, Ross. I have the receipt. It's an eleven-minute ride.\n\n**ROSS:** *(to Joey, gravely)* It felt like a sprint.\n\n**JOEY:** Okay, and then?\n\n**ROSS:** And then I burst through the doors \u2014 and there's a *nun*\u2014\n\n**RACHEL:** There's no nun.\n\n**ROSS:** There's *always* a nun in an airport, Rachel, it's an *airport.*\n\n**RACHEL:** Ross, I was *there.*\n\n**ROSS:** You were on the *plane!* You were in seat 32B, you didn't see the *concourse*, Rachel, there's a whole world happening on the concourse!\n\n**[GUNTHER approaches. He stops dead when he sees RACHEL. He does not blink.]**\n\n**GUNTHER:** You're back.\n\n**RACHEL:** *(bright)* I am!\n\n**GUNTHER:** You're not in Paris.\n\n**RACHEL:** Nope!\n\n**GUNTHER:** You're going to be *here.* Every day. Forever.\n\n**RACHEL:** *(charmed)* Isn't that nice?\n\n**[Long pause.]**\n\n**GUNTHER:** I told everyone.\n\n**RACHEL:** ...What?\n\n**GUNTHER:** I told you I loved you. And you said you loved me too. And then you got on a plane, and left the country, and I thought \u2014 well. That's the end of that story. That's a very sad, very beautiful, *finished* story. So I told everyone. *(beat)* I told the regulars. I told my mother. I told the man who delivers the milk. *(beat)* I bought a suit.\n\n**RACHEL:** Gunther\u2014\n\n**GUNTHER:** It's a good suit, Rachel.\n\n**RACHEL:** Gunther, I'm so\u2014\n\n**GUNTHER:** *(holding up a hand, then turning and addressing the entire coffee house, flat)* SHE'S BACK. IT'S FINE. EVERYTHING'S FINE.\n\n**[He walks away. Silence.]**\n\n**PHOEBE:** *(quietly, making a mark on her clipboard)* That was worth the demerit.\n\n---\n\n### SCENE 2\n\n**[Scene: MONICA and CHANDLER's house, Westchester. Big, sunlit, empty. Boxes everywhere \u2014 but arranged in a flawless grid on the living room floor. CHANDLER stands holding both twins, one in each arm. MONICA is on her knees with a label maker.]**\n\n**CHANDLER:** Okay. Question.\n\n**MONICA:** Mm-hm.\n\n**CHANDLER:** Why are the boxes in a grid?\n\n**MONICA:** They're not in a grid, they're in a *matrix.* Vertical axis is room, horizontal axis is frequency of use.\n\n**CHANDLER:** We got here at nine o'clock last night.\n\n**MONICA:** *(genuinely upset)* I *know!* I lost almost an hour to the twins!\n\n**CHANDLER:** *(looking down at the babies)* You hear that, guys? You're an hour behind. Mommy's very disappointed.\n\n**[He walks to the big window. Looks out. Long beat.]**\n\n**CHANDLER:** We have a lawn.\n\n**MONICA:** We do!\n\n**CHANDLER:** What do I do with it?\n\n**MONICA:** You mow it.\n\n**CHANDLER:** And then?\n\n**MONICA:** It grows.\n\n**CHANDLER:** And then?\n\n**MONICA:** You mow it.\n\n**CHANDLER:** *(long pause)* So it's a hobby with no ending and no purpose that punishes you for participating. *(beat)* I've found my sport.\n\n**[He turns back. Looks at the babies.]**\n\n**CHANDLER:** Okay, seriously \u2014 which one's which again?\n\n**MONICA:** Chandler.\n\n**CHANDLER:** I'm asking!\n\n**MONICA:** Jack is the boy. Erica is the girl.\n\n**CHANDLER:** Right. And I know that how?\n\n**MONICA:** *Chandler.*\n\n**CHANDLER:** I am not going to *check* every time, Monica! It's undignified! For all three of us!\n\n**[The doorbell rings. MONICA's head snaps up like a hunting dog.]**\n\n**MONICA:** Someone's here.\n\n**CHANDLER:** Someone's here.\n\n**MONICA:** Someone came *over.*\n\n**CHANDLER:** Honey, breathe\u2014\n\n**MONICA:** *(already running)* SOMEBODY CAME OVER!\n\n**[She flings open the door. GAIL, a pleasant woman in her forties, stands there with a small welcome basket.]**\n\n**GAIL:** Hi! Gail Bergen, number nine. We just wanted to say welcome to Ashby Lane!\n\n**MONICA:** *(a full second of stunned joy)* Oh my God. *(turning, screaming)* CHANDLER! *(turning back)* Wait right there. Wait right there. Do not move.\n\n**[She sprints off. CHANDLER wanders in with the twins.]**\n\n**CHANDLER:** Hi. Chandler. I live here now, apparently.\n\n**GAIL:** Gail. *(peering at the babies)* Oh, they're *beautiful.* Boy or girl?\n\n**CHANDLER:** *(beat)* ...Yes.\n\n**[MONICA returns, staggering under an enormous basket, roughly the size of a toddler.]**\n\n**MONICA:** Welcome to the neighborhood!\n\n**GAIL:** *(confused)* ...I live here.\n\n**MONICA:** I know! I made fourteen. One for every house on the street. Yours has the good jam because you're closest.\n\n**GAIL:** *(taking it, a little frightened)* That's \u2014 that is *so* thoughtful.\n\n**MONICA:** Also! I noticed the neighborhood association has an open secretary position\u2014\n\n**CHANDLER:** Honey.\n\n**MONICA:** \u2014and I've prepared some thoughts\u2014\n\n**CHANDLER:** Honey.\n\n**MONICA:** *(whipping around, murderous)* **WHAT.**\n\n**CHANDLER:** *(gently)* It's ten in the morning. On our first day.\n\n**[MONICA takes a breath. Turns back to GAIL. Radiant.]**\n\n**MONICA:** I've prepared some thoughts.\n\n---\n\n### SCENE 3\n\n**[Scene: The hallway outside apartments 19 and 20. JOEY comes out of his door with a sandwich. He stops. He looks at the purple door. He tries the handle. Locked.]**\n\n**[He glances both ways down the hall. Then he pulls a key out of his pocket and lets himself in.]**\n\n**[Scene: Apartment 20. Completely empty. Bare floors. The frame is still on the door. Late afternoon light. It's enormous and it's nothing.]**\n\n**[JOEY stands in the middle of it, holding his sandwich.]**\n\n**JOEY:** *(to the room)* Hey.\n\n**[Beat.]**\n\n**JOEY:** ...Yeah. I know, right?\n\n**[He walks a slow circle. Stops where the couch used to be. Sits down on the floor. Eats his sandwich.]**\n\n**[After a moment, he lies down on his back and looks at the ceiling.]**\n\n**JOEY:** *(quietly)* You're way better than my apartment.\n\n**[Fade.]**\n\n---\n\n### SCENE 4\n\n**[Scene: Ross's apartment. RACHEL sits at the table with a legal pad and the phone. EMMA, almost two, is on the floor with a plastic dinosaur. ROSS hovers. He is hovering so hard it has become an athletic event.]**\n\n**RACHEL:** *(on the phone)* Right. Well, if anything opens up \u2014 Rachel. Rachel Green. G-R-E-E-N. Like the color. *(beat)* Sure. Yes. Thank you. *(hangs up)*\n\n**ROSS:** How'd it go?!\n\n**RACHEL:** She said \"we'll keep your r\u00e9sum\u00e9 on file,\" which is a thing people say instead of \"get off my phone.\"\n\n**ROSS:** Okay. Okay! You know what, that's fine, because I've been thinking\u2014\n\n**RACHEL:** Oh boy.\n\n**ROSS:** \u2014and I think this is *great.*\n\n**RACHEL:** You think it's great that I'm unemployed?\n\n**ROSS:** I think it's great that you have *time!* Rachel, you have all the time in the world now! You could \u2014 you could take a class! You could read! Have you read *The Beginning of Infinity*\u2014\n\n**RACHEL:** Ross, I have a child, no income, and one shirt.\n\n**ROSS:** It's a *great* shirt.\n\n**RACHEL:** *(standing, pacing)* Do you understand that I gave up a job that a hundred and forty people applied for? A hundred and forty, Ross. I was going to run their *Paris operation.* I was going to have an *assistant* with an *assistant.* And now I'm on the phone with a woman named Bev at a knitwear company in Long Island City who has never heard of me.\n\n**ROSS:** *(carefully)* But you're happy.\n\n**[RACHEL stops. Beat.]**\n\n**RACHEL:** *(honestly)* I'm so happy it's making me nauseous.\n\n**ROSS:** *(triumphant)* See!\n\n**RACHEL:** Ross, both things are true at the same time! That's \u2014 that's what being an adult *is*, it's just two true things sitting on top of each other making you insane.\n\n**[EMMA looks up.]**\n\n**EMMA:** Pants!\n\n**[Both parents freeze.]**\n\n**RACHEL:** ...What did she say?\n\n**ROSS:** *(delighted, horrified)* She said \"pants.\"\n\n**EMMA:** *(clearly, proudly)* PANTS.\n\n**RACHEL:** *(to Ross)* Oh my God. She's been listening to me. That's her new word. Her new word is *pants.*\n\n**ROSS:** *(scooping Emma up)* Hey! Hey, that's a great word! That's a \u2014 you know what, that's a *noun*, Rach, that's a *concrete noun*, developmentally that's\u2014\n\n**RACHEL:** Ross.\n\n**ROSS:** \u2014that's really advanced\u2014\n\n**RACHEL:** *ROSS.*\n\n**ROSS:** *(beat)* ...Yeah?\n\n**RACHEL:** *(sitting back down heavily, staring at the legal pad)* I have no idea what I'm doing.\n\n**[ROSS opens his mouth. Nothing comes out. He closes it. He sits down next to her instead, Emma in his lap. He doesn't say anything. That's the right call, and he knows it, and it costs him everything.]**\n\n**EMMA:** *(softly, into the silence)* Pants.\n\n---\n\n### SCENE 5\n\n**[Scene: Central Perk. RACHEL and PHOEBE on the couch.]**\n\n**PHOEBE:** Okay, so let me get this straight. You have no job, no apartment, no clothes, and no plan.\n\n**RACHEL:** Yes.\n\n**PHOEBE:** Rachel. *(taking her hands, deadly serious)* That's how *I* live. That's my whole thing. You can't just take my whole thing.\n\n**RACHEL:** *(laughing)* Pheebs\u2014\n\n**PHOEBE:** No, seriously, I've been doing this for thirty-five years and I'm *very good at it* and you can't just walk in on day one and be homeless and mysterious. There's a \u2014 there's a *seniority* thing.\n\n**RACHEL:** *(beat)* Okay, can I say something out loud and you can't tell anyone?\n\n**PHOEBE:** I'll try. But I'm bad at it and I want you to know that going in.\n\n**RACHEL:** *(quietly)* I keep thinking about the plane.\n\n**PHOEBE:** Yeah?\n\n**RACHEL:** Not \u2014 not getting off it. Getting *on* it. *(beat)* Pheebs, I sat down in that seat and I put my bag under the seat in front of me and I thought, \"this is the first thing I've ever done that was *only mine.*\" No boyfriend. No father. No dinner where somebody has an opinion. Just me and a job and a city I don't speak the language of. *(beat)* And it was terrifying. And it was the best I've ever felt.\n\n**PHOEBE:** *(gently)* And then?\n\n**RACHEL:** *(beat)* And then I heard his voice.\n\n**[Beat.]**\n\n**PHOEBE:** Okay. So do you want to know what I actually think?\n\n**RACHEL:** *(bracing)* Yes.\n\n**PHOEBE:** I think you didn't get off the plane for Ross.\n\n**RACHEL:** ...I did, though. I pretty specifically did.\n\n**PHOEBE:** No, you got off the plane *because* of Ross. Those are super different. *(beat)* Rachel, you've been doing the same thing since you were, like, nine. You wait for a big enough reason to show up, and then you *react* to it. The dress! The plane! It's always somebody standing in a doorway going \"Rachel!\" and you go, \"well, I *guess* I have to.\" *(beat)* You've never once in your life just... picked a thing. Out of nowhere. For no reason but wanting it.\n\n**[RACHEL stares at her.]**\n\n**RACHEL:** ...That's the meanest thing you've ever said to me.\n\n**PHOEBE:** *(sweetly)* Oh, honey, no it isn't. I once told you your neck was long.\n\n**RACHEL:** *(standing, upset, grabbing her coat)* You know what? I'm gonna go.\n\n**PHOEBE:** Okay!\n\n**RACHEL:** *(at the door, turning back)* And my neck is *fine!*\n\n**PHOEBE:** *(calling after her, warmly)* It's a beautiful neck, Rachel! It's just *long!*\n\n---\n\n### SCENE 6\n\n**[Scene: Apartment 20. Night. Pitch black. Then the door opens and light spills in \u2014 ROSS, silhouetted, holding a bag.]**\n\n**[JOEY is asleep on the floor in the middle of the empty room, under his coat, with the chick and the duck asleep on his chest.]**\n\n**ROSS:** *(flipping a switch. Nothing.)* Joey.\n\n**JOEY:** *(bolting upright)* I'm up! I'm up. *(squinting)* Hey.\n\n**ROSS:** Why are you asleep on the floor of an empty apartment?\n\n**JOEY:** I'm not *asleep*, I *fell* asleep, that's \u2014 that's totally different.\n\n**ROSS:** You have a bed. It's eleven feet that way.\n\n**JOEY:** *(rubbing his face, sitting up properly)* Yeah.\n\n**[ROSS sits down on the floor beside him. Sets the bag between them. Pulls out two beers.]**\n\n**ROSS:** Talk.\n\n**JOEY:** *(long beat)* You know what the thing is? For ten years I could just... walk in. Any time. Middle of the night. Two in the afternoon. I could walk in and there'd be somebody in here. There was *always* somebody in here. *(beat)* Now I gotta call people, Ross. I gotta make *plans.* I'm thirty-six years old and I have to make plans.\n\n**ROSS:** *(beat)* You're thirty-six?\n\n**JOEY:** I'm whatever you need me to be.\n\n**ROSS:** *(nodding, letting it go)* Joey, I'm eleven blocks away. I've been eleven blocks away for six years.\n\n**JOEY:** Yeah, but the door was *open*, man. That's different. *(beat)* Eleven blocks with the door open is nothin'. Eleven blocks with the door *locked* is... eleven blocks.\n\n**[ROSS has nothing. He drinks.]**\n\n**JOEY:** *(gesturing at the room)* And it's not the apartment. I don't want the apartment. I *know* it's an apartment. It's a *box.* Monica used to yell at me in here, it wasn't even that great. *(beat)* But I could walk in.\n\n**[Beat.]**\n\n**ROSS:** *(quietly)* How'd you get a key?\n\n**JOEY:** Treeger.\n\n**ROSS:** How'd you get a key from Treeger?\n\n**JOEY:** *(shrugging, not proud)* I told him I'd dance with him at his niece's wedding.\n\n**ROSS:** ...You *what?*\n\n**JOEY:** He's a big guy, Ross, and he's got nobody, and he *asked*, and I got a key out of it. Everybody wins.\n\n**[ROSS looks at him for a long moment.]**\n\n**ROSS:** You know, sometimes you're the smartest person I know.\n\n**JOEY:** *(instantly, delighted)* Yeah?\n\n**ROSS:** No.\n\n**JOEY:** *(deflating)* Ah.\n\n**[They drink. In the dark. In the empty room.]**\n\n---\n\n### SCENE 7\n\n**[Scene: Ross's apartment. Morning. ROSS is pacing. He's been pacing a while. There's a manila folder on the table and he keeps looking at it and looking away, like it's radioactive. The door opens \u2014 RACHEL, coming in with EMMA and coffee.]**\n\n**RACHEL:** Hi! Okay, so, Bev from the knitwear place called back, which \u2014 I know, but she said\u2014\n\n**ROSS:** I have to tell you something and I need you to let me finish.\n\n**RACHEL:** *(stopping dead)* That's never good.\n\n**ROSS:** I called Mark.\n\n**RACHEL:** ...Mark?\n\n**ROSS:** Mark Robinson. Mark. Your Mark. *The* Mark.\n\n**RACHEL:** *You called Mark?!* Ross, you *hate* Mark! You once described Mark as, and I'm quoting, \"a man-shaped reason we broke up.\"\n\n**ROSS:** *(a flicker of pride)* I did say that. That's very good. I'd forgotten I said that.\n\n**RACHEL:** *Why did you call Mark?*\n\n**ROSS:** *(beat)* I called him at six o'clock in the morning. He was \u2014 honestly? He was really gracious about it. He's married now. He has a boat. He has a *boat*, Rachel, and he mentioned it *twice*, so.\n\n**RACHEL:** *Ross.*\n\n**ROSS:** *(the hard part)* Louis Vuitton hasn't filled the job.\n\n**[Dead silence.]**\n\n**RACHEL:** ...What?\n\n**ROSS:** They can't fill a position like that in a week. They wanted *you.* Mark talked to Nicole in Paris last night. They'll hold it for forty-eight hours. *(beat)* That's what he said. Forty-eight hours.\n\n**[RACHEL sets the coffee down very slowly, like it might go off.]**\n\n**RACHEL:** *(barely audible)* You got me my job back.\n\n**ROSS:** Yeah.\n\n**RACHEL:** In Paris.\n\n**ROSS:** Yeah.\n\n**RACHEL:** *(the volume arriving all at once)* **Why would you DO that?!**\n\n**ROSS:** *(this is costing him)* Because you got off a plane, Rach. And that is the single best thing that has ever happened to me \u2014 it is *going on my tombstone* \u2014 but you didn't *decide* anything. You *reacted.* You heard a voice on a machine and you ran off an airplane. And that's a movie. That's a *great* movie. But it's not a life. *(beat)* And in three years, or five, or twenty \u2014 you're gonna be standing in a kitchen somewhere, and you're gonna think, \"I could've had Paris.\" And I will be the reason you didn't.\n\n**RACHEL:** Ross\u2014\n\n**ROSS:** *(steady)* I've been the reason before.\n\n**[That lands. RACHEL's face does something complicated.]**\n\n**ROSS:** *(quieter)* I don't want to be the reason. I want to be the *choice.* I've never once in ten years been the choice. I've been the accident, and the mistake, and the guy on the answering machine, and the \u2014 the *default.* I want to be the thing you picked. *(beat)* Even if you don't.\n\n**[Long, long pause.]**\n\n**RACHEL:** *(finally, shaking)* I hate you so much right now.\n\n**ROSS:** I know.\n\n**RACHEL:** I *had* it! It was *done!* I got off the plane, it was the whole \u2014 it was the *end of the story*, Ross, and you \u2014 you *gave it back to me!*\n\n**ROSS:** Yes.\n\n**RACHEL:** Now I have to *decide!*\n\n**ROSS:** *(nodding)* Yes.\n\n**[She grabs her coat. Stops at the door. Turns around.]**\n\n**RACHEL:** This is the nicest thing anyone has ever done for me and I have never in my life wanted to hit you more.\n\n**[She goes. The door slams. ROSS stands alone in the middle of the room.]**\n\n**ROSS:** *(to himself, after a beat)* ...I'll take it.\n\n**[COMMERCIAL BREAK]**\n\n---\n\n## ACT TWO\n\n### SCENE 8\n\n**[Scene: Monica and Chandler's kitchen. Westchester. MONICA and RACHEL at the island. MONICA is holding ERICA. There is a legal pad in front of them that already has a chart on it.]**\n\n**MONICA:** Forty-eight hours.\n\n**RACHEL:** Forty-one.\n\n**MONICA:** *(immediately reaching for a pen)* Okay. I'll make a chart.\n\n**RACHEL:** **MONICA.**\n\n**MONICA:** *A small chart!*\n\n**RACHEL:** *(taking the pen away)* No charts. No lists. No pro-con. Mon, I have done pro-con on this man since 1994. I have *retired* undefeated from pro-con.\n\n**MONICA:** *(setting the pen down, hurt)* Well, then what do you want from me?\n\n**RACHEL:** I want you to tell me what to do.\n\n**[Beat.]**\n\n**MONICA:** *(carefully)* I can't do that.\n\n**RACHEL:** You've told me what to do since I was six years old! You told me not to marry Barry! You told me to move to the city! You told me my bangs were a war crime!\n\n**MONICA:** *(instantly)* They were.\n\n**RACHEL:** So *tell me!*\n\n**[MONICA opens her mouth. And then, unexpectedly, her eyes fill.]**\n\n**MONICA:** I don't know.\n\n**RACHEL:** ...What?\n\n**MONICA:** I don't *know*, Rachel! *(setting Erica down in the bassinet, hands shaking)* I've known everything for ten years! I knew *everything!* I knew where everybody was, and who everybody was dating, and what everybody was having for dinner, because *I was making it!* I was the \u2014 I was the switchboard! *(beat)* And now I live in a house on a street with a *name* like a *golf course*, and the grocery store has a *parking lot*, and I have two babies I didn't grow, and a husband on a train, and I have never in my entire life had *less* idea what happens next.\n\n**RACHEL:** *(small)* Monica...\n\n**MONICA:** *(fierce, wiping her face)* And it's *fine.* It's fine! I'm happy. I'm *so* happy it's disgusting, I look at those two and I can't breathe. *(beat)* But I left the front door unlocked last night. For an hour. *(beat)* Just in case somebody walked in.\n\n**[Long pause.]**\n\n**RACHEL:** Nobody walked in.\n\n**MONICA:** Nobody walked in.\n\n**[They sit with that.]**\n\n**MONICA:** *(quietly)* I really can't tell you what to do.\n\n**RACHEL:** *(equally quietly)* I know.\n\n**MONICA:** *(beat)* It's *killing* me.\n\n**RACHEL:** *(a wet laugh)* I know.\n\n**[MONICA reaches out. RACHEL takes her hand.]**\n\n**MONICA:** *(after a moment, unable to help herself)* ...Would you like to hear a *verbal* chart?\n\n**RACHEL:** *(closing her eyes)* Oh my God.\n\n**MONICA:** It's just three columns and it lives entirely in my mouth.\n\n---\n\n### SCENE 9\n\n**[Scene: Central Perk. JOEY at the counter. GUNTHER is wiping the same six inches of counter, staring at nothing.]**\n\n**JOEY:** So how you doing?\n\n**GUNTHER:** *(not looking up)* Nineteen years, Joey.\n\n**JOEY:** Yeah?\n\n**GUNTHER:** Nineteen years I've been in love with that woman. And I finally say it out loud. And do you know what happened? *(beat)* *Nothing.* Nothing happened. She said \"I love you too, Gunther,\" and then she got on an airplane, and then she got *off* the airplane, and now she comes in here every morning and orders the *same coffee.* *(beat)* The world just... kept going.\n\n**JOEY:** *(nodding sympathetically)* That's rough, buddy.\n\n**GUNTHER:** *(a long, dead beat)* I'm making a change.\n\n**JOEY:** Yeah! Yeah, good! Like what?\n\n**GUNTHER:** *(walking away)* You'll see.\n\n**JOEY:** *(calling after him)* ...That was creepy, Gunther! That was a creepy way to say that!\n\n**[PHOEBE slides onto the stool next to him with the clipboard.]**\n\n**PHOEBE:** It's Thursday.\n\n**JOEY:** Pheebs, it's *Wednesday.*\n\n**PHOEBE:** *(making a mark)* Well, tomorrow it's Thursday, and Thursdays are Monica and Chandler, and they'd better be here, Joey, because I have *called* them and I have *emailed* them and I have *left a note in her mailbox in Westchester which I drove to.*\n\n**JOEY:** You drove to Westchester to leave a note?\n\n**PHOEBE:** *(beat)* It's not a long drive.\n\n**JOEY:** It's an hour!\n\n**PHOEBE:** *(sharply)* It's *forty-one minutes*, Joey, and that's *nothing*, and I want everyone to stop acting like it's the moon!\n\n**[Beat. Her chin wobbles. She recovers instantly.]**\n\n**PHOEBE:** *(businesslike)* Anyway. Tomorrow. Eight o'clock. The old apartment.\n\n**JOEY:** Pheebs, the apartment's empty. There's no furniture. There's no *lights.*\n\n**PHOEBE:** *(standing, gathering her things)* Joey, do you know what the six of us have literally never needed?\n\n**JOEY:** ...Furniture?\n\n**PHOEBE:** Furniture.\n\n---\n\n### SCENE 10\n\n**[Scene: Westchester. Night. The living room. Boxes still in their grid. MONICA sits on the floor in the middle of the grid, not unpacking. CHANDLER comes in, tie loose, briefcase, exhausted.]**\n\n**CHANDLER:** Hi.\n\n**MONICA:** Hi.\n\n**CHANDLER:** *(dropping the bag)* Well. The commute is fifty-two minutes, there are nine stops, and the man across from me clipped his fingernails onto the floor of a moving train like an *animal in a fable.*\n\n**MONICA:** *(flat)* Uh huh.\n\n**CHANDLER:** *(a beat, reading her)* Also, there's a bar car.\n\n**MONICA:** Chandler.\n\n**CHANDLER:** I'm just saying, I have a fifty-two minute window, twice a day, professionally sanctioned, in a *moving bar.* My father would love this train. *(beat)* My father would have *ideas* about this train.\n\n**[Nothing. MONICA doesn't laugh. CHANDLER stops. He crosses and sits down on the floor beside her, in the grid.]**\n\n**CHANDLER:** Hey.\n\n**MONICA:** *(staring at the boxes)* It's so quiet.\n\n**CHANDLER:** Yeah.\n\n**MONICA:** *(beat)* I don't know how to do this, Chandler. I don't know how to be a person who has to be *invited.* I have never in my adult life been invited anywhere, I just \u2014 I *cooked*, and people came, and that was the deal! That was the whole deal! *(beat)* And now Phoebe leaves a *note* in my *mailbox* about a *Thursday.*\n\n**[Beat.]**\n\n**CHANDLER:** *(quietly)* When I was a kid, nobody came over.\n\n**MONICA:** *(looking at him)* ...What?\n\n**CHANDLER:** Nobody came over. Ever. My mother had *parties* \u2014 there were eighty people in that house and no one ever *came over.* Nobody stood in our kitchen at two in the morning eating our cereal out of the box and telling me I was an idiot. Not once. *(beat)* And then I turned thirty and there were five people doing it every single day, and I never once said thank you, because I thought \u2014 that's just what happens. That's just how life goes.\n\n**[Beat.]**\n\n**CHANDLER:** It's not how life goes, Mon. That was a fluke. We got a *fluke.* Most people never get one.\n\n**MONICA:** *(crying now)* So what do we do?\n\n**CHANDLER:** *(simply)* We drive.\n\n**MONICA:** What?\n\n**CHANDLER:** It's forty-one minutes. We drive.\n\n**MONICA:** With the twins?\n\n**CHANDLER:** With the twins. In the dark. Like maniacs. Both car seats, the whole circus, in and out, twice a week, until they're eighteen and they're *sick of it.* *(beat)* Monica, I am not raising kids in a house nobody comes to. I've *seen* that house. I *am* that house.\n\n**[MONICA grabs him and holds on. He holds on back.]**\n\n**MONICA:** *(into his shoulder)* I love you so much.\n\n**CHANDLER:** *(beat)* Also, I want to say again, there is a *bar car* on this train.\n\n**MONICA:** *(muffled)* Chandler.\n\n**CHANDLER:** I'm gonna be on that train a *lot* is all I'm saying.\n\n---\n\n### SCENE 11\n\n**[Scene: Ross's apartment. Night. RACHEL comes in. ROSS is standing in the middle of the room, holding the manila folder in both hands like a hymnal.]**\n\n**ROSS:** Okay. Before you say anything.\n\n**RACHEL:** *(stopping)* Oh my God. Is that a folder?\n\n**ROSS:** It's a folder.\n\n**RACHEL:** You made a *folder.*\n\n**ROSS:** I made a folder. *(opening it)* It has tabs.\n\n**RACHEL:** Ross\u2014\n\n**ROSS:** *(barreling through, pulling out pages)* The Mus\u00e9um national d'Histoire naturelle has an open research affiliation in the paleontology department. It's a step down. It's a *significant* step down, Rachel, it's \u2014 I'd be a *guest.* I'd have a *cart.* *(beat)* But their Diplodocus. Rachel. *Their Diplodocus is unbelievable.*\n\n**RACHEL:** *(very slowly)* What are you doing.\n\n**ROSS:** *(next page)* There are four bilingual preschools within a twenty-minute walk of the Louis Vuitton offices. I ranked them. Emma would go to the second one, because the first one has a *weird thing about shoes.*\n\n**RACHEL:** *(her eyes filling)* Ross\u2014\n\n**ROSS:** *(next page, faster now, hands shaking)* This is a two-bedroom in the eleventh arrondissement. It's small. It's \u2014 okay, it's *very* small, it's the size of this table, but there's a bakery *downstairs*, and you love bread, you love bread more than you love most people\u2014\n\n**RACHEL:** *Ross.*\n\n**ROSS:** *(holding up a final page, ruined)* And this is my French. *(beat)* I've been at it since six this morning. *(reading, phonetically, horrifically)* \"Bonjour. Je m'appelle Ross. Je suis un... dinosaur man.\"\n\n**[RACHEL laughs and it comes out as a sob.]**\n\n**ROSS:** *(putting the folder down. Quiet now.)* I'll come with you.\n\n**[Silence.]**\n\n**RACHEL:** You would move to France.\n\n**ROSS:** I would move to France.\n\n**RACHEL:** You don't like French food.\n\n**ROSS:** I don't like *any* food, Rachel, that's a completely separate problem and I'm working on it.\n\n**[Beat. He steps closer.]**\n\n**ROSS:** *You* got on a plane once to stop *me* from being with somebody else. You flew all the way to London to ruin a wedding \u2014 and I still said the wrong name at that *altar.* *(beat)* And a year ago I ran through an airport after you and got stopped at the gate. *(beat)* I have a really, really bad history with airports, Rach. *(beat)* I'd like to try one where I'm on the right side of it.\n\n**[Long silence. RACHEL looks at him. At the folder. At Emma's toys on the floor. At the room.]**\n\n**RACHEL:** No.\n\n**[ROSS nods. Absorbs it. Straightens his shoulders like a man taking a punch professionally.]**\n\n**ROSS:** Okay. Okay, that's \u2014 no, that's totally \u2014 I understand, and I want you to know\u2014\n\n**RACHEL:** No, you *idiot.* I'm not going to Paris.\n\n**ROSS:** *(a half second of dead air)* ...What?\n\n**RACHEL:** I'm not going.\n\n**ROSS:** Are you \u2014 are you *sure?* Because I have a *folder*, Rachel, and this is a *Ross-level folder*, this is arguably my *best* folder\u2014\n\n**RACHEL:** **Ross.**\n\n**[He stops.]**\n\n**RACHEL:** *(shaking)* I have spent ten years deciding things because of you. I moved apartments because of you. I got off a plane because of you. I turned down that job on a Tuesday because of you and I took it on a Wednesday because of you. Every single big thing in my adult life, you have been standing in the doorway of. *(beat)* And this morning you handed the whole thing back to me and said \"choose.\" Do you have any idea what that's like?\n\n**ROSS:** *(small)* ...Bad?\n\n**RACHEL:** It's *awful.* It's the worst day I've had in a year. *(beat)* And it's the first time in a decade I've gotten to pick something.\n\n**ROSS:** *(barely breathing)* And you pick\u2014\n\n**RACHEL:** I pick this. *(beat)* I pick you. And I pick her. And I pick a city where I have no job and no plan and no pants. *(beat)* On purpose. Out loud. In a room. With the door open and a plane sitting right there.\n\n**[Beat.]**\n\n**RACHEL:** I'm not getting off the plane, Ross. I'm not *on* the plane. *(beat)* I'm here.\n\n**[ROSS is completely destroyed. In the best way.]**\n\n**ROSS:** *(after a long moment)* ...Can I say the thing?\n\n**RACHEL:** *(laughing, crying)* Say the thing.\n\n**ROSS:** You got off the plane.\n\n**RACHEL:** I got off the plane.\n\n**[They kiss.]**\n\n**EMMA:** *(from the floor, apropos of nothing, triumphant)* **PANTS!**\n\n**ROSS:** *(not breaking the kiss, muffled)* We really have to fix that.\n\n---\n\n### SCENE 12\n\n**[Scene: Ross's apartment. Moments later. RACHEL is on the phone. ROSS is pretending very hard not to listen from four feet away.]**\n\n**RACHEL:** *(on the phone)* Mark? Hi. It's Rachel. *(beat)* I'm good. I'm \u2014 yeah. Yeah. *(beat)* I'm not coming.\n\n**[Beat. ROSS closes his eyes.]**\n\n**RACHEL:** *(soft)* Yeah. Tell Nicole I'm sorry, and tell her \u2014 tell her she should call Amanda Weller at Bergdorf's, she's the real one, everybody thinks it's the other one. *(beat)* Okay. *(beat)* Mark? Hey \u2014 thank you. Really. *(beat, her face doing something odd)* ...Sure. I'll tell him.\n\n**[She hangs up.]**\n\n**ROSS:** What? What'd he say?\n\n**RACHEL:** He says congratulations.\n\n**ROSS:** *(deeply, radiantly pleased, working hard to seem casual)* Well. That's \u2014 huh. I mean, that's a decent thing to say. That's a decent thing for a person to say. Good for Mark. Good for Mark and his *boat.*\n\n**RACHEL:** He also said you cried on the phone.\n\n**ROSS:** *(instantly, at volume)* That is a **lie.** Mark Robinson is a **liar** and he has *always* been a liar\u2014\n\n**RACHEL:** Ross\u2014\n\n**ROSS:** \u2014there was a *thing* in my *throat*, Rachel, at six in the morning, it was *phlegm*, it was *scientifically phlegm*\u2014\n\n**RACHEL:** *(sitting on the arm of the couch, watching him)* Ross.\n\n**ROSS:** *(stopping)* Yeah.\n\n**RACHEL:** *(beat)* I have no idea what I'm going to do.\n\n**ROSS:** Really?\n\n**RACHEL:** Really. No job. No plan. No pants. *(beat)* I'm a grown woman with a child and a college degree in a field I invented, and I have absolutely no idea what happens next.\n\n**ROSS:** *(carefully)* And that's...\n\n**RACHEL:** *(a slow smile spreading)* Isn't that *great?*\n\n**ROSS:** *(beat)* ...It's a *little* great.\n\n**RACHEL:** *(standing, grabbing her coat, alive)* It's *so* great. Come on. It's Thursday.\n\n**ROSS:** What's Thursday?\n\n**RACHEL:** *(at the door)* Apparently Thursday is Monica and Chandler.\n\n---\n\n### SCENE 13\n\n**[Scene: Apartment 20. Night. The door opens \u2014 JOEY, with his key, holding a stack of pizza boxes. Behind him, PHOEBE with a paper bag full of candles. She starts setting them on the floor. MIKE follows with a six-pack.]**\n\n**MIKE:** *(looking around at the totally empty room)* This is the whole plan.\n\n**PHOEBE:** This is the whole plan.\n\n**MIKE:** *(nodding slowly, setting the beer down)* ...Okay.\n\n**PHOEBE:** *(kissing him)* This is why I married you.\n\n**MIKE:** *(sitting on the floor)* I'm aware.\n\n**[The door opens. ROSS and RACHEL come in with EMMA.]**\n\n**RACHEL:** *(stopping in the doorway. Taking in the empty room, the candles, the pizza on the floor.)* Oh.\n\n**ROSS:** Yeah.\n\n**[Then, from the hallway: an unmistakable sound. Someone struggling with a lot of equipment.]**\n\n**CHANDLER:** *(O.S.)* \u2014 I *told* you the stroller doesn't fit\u2014\n\n**MONICA:** *(O.S.)* \u2014 it fits, it *fits*, you're just doing it *wrong*\u2014\n\n**CHANDLER:** *(O.S.)* \u2014 Monica, it is a *building*, it's not going to *change*\u2014\n\n**[MONICA appears in the doorway carrying ERICA in a car seat. CHANDLER is behind her with JACK and roughly nine bags.]**\n\n**[Nobody says anything. Everyone just looks at each other.]**\n\n**PHOEBE:** *(checking the clipboard, deadpan)* You're four minutes late. *(makes a mark)*\n\n**MONICA:** *(near tears, furious, thrilled)* WE DROVE FOR AN HOUR.\n\n**PHOEBE:** *(making another mark)* And you were four minutes late.\n\n**[MONICA sets the car seat down and looks at the room. Her room.]**\n\n**CHANDLER:** *(quietly, after a beat)* It's smaller.\n\n**MONICA:** It's not smaller.\n\n**CHANDLER:** Empty rooms are supposed to look *bigger.* That's the whole thing about empty rooms. *(beat)* This one looks *smaller.* *(beat)* That's the worst thing about it.\n\n**[They all sit down on the floor. Pizza. Candles. The frame still on the door.]**\n\n**ROSS:** *(to Joey)* You want to tell them or should I?\n\n**JOEY:** *(mouth full)* Tell 'em what?\n\n**ROSS:** Joey's been sleeping in here.\n\n**[Everyone reacts at once.]**\n\n**JOEY:** ROSS!\n\n**MONICA:** You've been *what?*\n\n**JOEY:** I'm not *sleeping* in here, I *fall asleep* in here, it is a *completely* different \u2014 *(to Ross, wounded)* We were *drinking!* That was a *drinking* conversation!\n\n**PHOEBE:** Joey, that's so sad.\n\n**JOEY:** I know!\n\n**PHOEBE:** No, I mean it's *actually* sad. I'm not doing a bit. I'm having a feeling.\n\n**[Beat.]**\n\n**JOEY:** *(setting the pizza down)* Treeger rented it.\n\n**[Silence.]**\n\n**RACHEL:** ...What?\n\n**JOEY:** Somebody's moving in Monday.\n\n**MONICA:** *(quietly)* Monday.\n\n**JOEY:** *(getting worked up)* And here's the thing \u2014 somebody's gonna *live* here, and they're not gonna *know.*\n\n**PHOEBE:** Know what?\n\n**JOEY:** *Any of it!* They're not gonna know the couch went *there!* They're not gonna know Chandler and me lived across the hall for *ten years*, or that Phoebe wrote a *song* in this room, or that Ross got *married* in this room\u2014\n\n**ROSS:** Ross did not get *married* in this room.\n\n**JOEY:** You got *engaged* in this room!\n\n**ROSS:** *(beat)* ...Which one.\n\n**[Everyone laughs.]**\n\n**MONICA:** *(staring at the door)* They're gonna paint the door.\n\n**[The laughing stops.]**\n\n**CHANDLER:** *(very quietly)* ...They're gonna paint the door.\n\n**[A long silence. PHOEBE breaks it.]**\n\n**PHOEBE:** Rachel. Tell it right.\n\n**RACHEL:** Tell what?\n\n**PHOEBE:** The airport. Ross has told it nine times and there's a *nun* in it now. Tell it right.\n\n**ROSS:** There *is* a nun\u2014\n\n**PHOEBE:** *(not looking at him)* Rachel.\n\n**[Beat. RACHEL sets down her slice.]**\n\n**RACHEL:** *(quietly)* Okay. *(beat)* So. I was in seat 32B. And I was fine. Honestly \u2014 I want you to know this \u2014 I was *fine.* I'd cried. I'd said goodbye. I had my headphones in and I had a magazine and I was going to be *fine.*\n\n**[Everyone is very still.]**\n\n**RACHEL:** And then I heard him. On the machine. On my phone. And you know how his voice does the thing when he's scared? Where it goes up?\n\n**ROSS:** It does *not* go up.\n\n**RACHEL:** *(doing it, an octave high)* \"I love you, Rachel.\"\n\n**[Everyone cracks up. ROSS puts his face in his hands.]**\n\n**RACHEL:** *(the laughter dying down. Softer now.)* And I sat there. And they closed the door. *(beat)* And I thought \u2014 okay. Ten years. Ten years of doors closing. That's what this is. That's what it's *been.* Somebody closes a door and I just... sit in the seat.\n\n**[Beat.]**\n\n**RACHEL:** And I stood up.\n\n**[Nobody moves.]**\n\n**RACHEL:** And I said \"I have to get off the plane,\" and a flight attendant said \"Ma'am, please sit down,\" and *every single person* on that airplane turned around and looked at me. And I have never in my life been more sure of anything, and I was so scared I couldn't feel my hands. *(beat)* And then I walked up the aisle. *(beat)* And I got off the plane.\n\n**[Total silence. Candlelight. Six people on the floor of an empty room.]**\n\n**JOEY:** *(quietly)* That's a way better story.\n\n**ROSS:** *(devastated)* There's no *nun* in it.\n\n**PHOEBE:** *(gently)* There's no nun in anything, Ross.\n\n---\n\n### SCENE 14\n\n**[Scene: Apartment 20. Later. The pizza boxes are stacked. The candles are burning down. Everyone's getting up, stiff from the floor. MONICA is buckling ERICA into the car seat. CHANDLER has JACK.]**\n\n**MONICA:** *(standing, brushing off her jeans, businesslike)* Okay. Same time next Thursday.\n\n**PHOEBE:** *(instantly)* You can't just *say* \"same time next Thursday,\" that's *my whole thing*, I *have* a schedule, there's a *system*\u2014\n\n**MONICA:** Phoebe\u2014\n\n**PHOEBE:** \u2014I *drove to Westchester*\u2014\n\n**CHANDLER:** Pheebs.\n\n**[She stops.]**\n\n**CHANDLER:** *(beat)* We'll be here.\n\n**[PHOEBE's eyes fill. She looks down at the clipboard immediately and pretends to consult it.]**\n\n**PHOEBE:** *(voice tight)* ...Fine. Great. Whatever. It's on the schedule anyway. *(beat, barely)* It's on the schedule.\n\n**[They start filing out. JOEY blows out the candles one by one. RACHEL stops in the doorway, looking back at the room.]**\n\n**RACHEL:** *(to Ross)* You know what's crazy? I moved into this apartment with nothing. I had *one bag.* I'd just left a man at an altar and I had one bag and I didn't have a job and I didn't have a plan.\n\n**ROSS:** *(beat)* And now?\n\n**RACHEL:** *(beat, smiling)* Now I have a kid and a duty-free Toblerone.\n\n**ROSS:** So you've grown.\n\n**RACHEL:** *(taking his hand)* I've *grown*, Ross.\n\n**[They go. JOEY is last. He stands in the doorway with the key in his hand, looking at the empty room in the dark.]**\n\n**[MONICA appears back in the doorway behind him.]**\n\n**MONICA:** *(quietly)* Hey. Joey.\n\n**JOEY:** Yeah?\n\n**MONICA:** *(beat)* You guys have time for coffee?\n\n**[Beat. JOEY grins.]**\n\n**JOEY:** Sure.\n\n**[They go. The door closes. Hold on the empty apartment in the dark. The frame on the back of the door.]**\n\n**[Beat.]**\n\n**[The door opens again. JOEY sticks his head back in.]**\n\n**JOEY:** *(to the room)* ...I'll see ya.\n\n**[He closes the door.]**\n\n**[CLOSING CREDITS]**\n\n---\n\n## TAG\n\n**[Scene: The hallway. Days later. Cardboard boxes stacked outside the purple door. JOEY comes out of 19 with a bag of chips, sees them, stops.]**\n\n**[GUNTHER comes up the stairs carrying a box. He is wearing a suit.]**\n\n**JOEY:** ...Gunther?\n\n**GUNTHER:** Hey, Joey.\n\n**JOEY:** What are you doing?\n\n**GUNTHER:** I'm moving in. *(setting the box down)* Nineteen years I've lived above the coffee house. I decided I needed a change.\n\n**JOEY:** *(looking at the purple door, then back)* You're moving in *here?* Into *Monica's?*\n\n**GUNTHER:** *(correcting him quietly, dreamily)* Into *Rachel's.*\n\n**[Long, long pause.]**\n\n**JOEY:** ...Does Rachel know?\n\n**GUNTHER:** *(picking up the box, going in)* Rachel doesn't have to know.\n\n**[He disappears inside. The door starts to close. JOEY stands alone in the hallway with his chips.]**\n\n**JOEY:** *(calling out, hopefully)* Hey \u2014 you got food in there?\n\n**GUNTHER:** *(from inside)* I have *so much food*, Joey.\n\n**[Beat. JOEY looks at his chips. Looks at the door. Looks both ways down the hall.]**\n\n**[He pushes the door open and walks in.]**\n\n**JOEY:** *(as he enters)* I'm just gonna sit for a minute!\n\n**[BLACKOUT]**\n\n## END\n";
+
+  /* ---------- render ---------- */
+  function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+  function inline(s) {
+    s = esc(s);
+    s = s.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+    s = s.replace(/\*(\(.+?\))\*/g, '<em class="paren">$1</em>');
+    s = s.replace(/\*(.+?)\*/g, "<em>$1</em>");
+    return s;
+  }
+
+  var lines = md.split("\n");
+  var html = [], toc = [], blockIdx = 0, act = "Teaser";
+  var title = "", ep = "", note = "";
+
+  function push(tag, cls, body) {
+    html.push("<" + tag + ' class="' + cls + '" data-i="' + blockIdx + '">' + body + "</" + tag + ">");
+    blockIdx++;
+  }
+
+  for (var i = 0; i < lines.length; i++) {
+    var L = lines[i].trim();
+    if (!L) continue;
+
+    if (L.indexOf("# ") === 0 || L.indexOf("## ") === 0) {
+      var t = L.replace(/^#+\s*/, "");
+      if (i < 6) {
+        if (t === "FRIENDS") continue;
+        if (/^Season/i.test(t)) { ep = t; continue; }
+        title = t.replace(/^"|"$/g, ""); continue;
+      }
+      act = t;
+      toc.push({ act: 1, label: t, i: blockIdx });
+      push("h2", "act", esc(t));
+      continue;
+    }
+    if (L === "---") { html.push("<hr>"); continue; }
+    if (L.indexOf("**[") === 0) {
+      var body = L.replace(/^\*\*\[/, "").replace(/\]\*\*$/, "");
+      var scene = body.match(/^Scene:\s*(.+?)[.\u2026]/);
+      if (scene) toc.push({ act: 0, label: scene[1], i: blockIdx });
+      push("p", "stage", inline(body));
+      continue;
+    }
+
+    var cue = L.match(/^\*\*([A-Z0-9 .'&/-]{2,28}):\*\*\s*(.*)$/);
+    if (cue) {
+      push("div", "line", '<span class="cue">' + esc(cue[1]) + "</span><p>" + inline(cue[2]) + "</p>");
+      continue;
+    }
+
+    if (/^\*.*\*$/.test(L) && html.length < 12) { note = L.replace(/^\*|\*$/g, ""); continue; }
+    if (/^(END OF|FADE|CUT TO|THE END)/i.test(L.replace(/\*/g, ""))) {
+      push("p", "end", esc(L.replace(/\*/g, ""))); continue;
+    }
+    push("p", "plain", inline(L));
+  }
+  doc.innerHTML =
+    '<div class="titleblock">' +
+      '<p class="show">Friends</p>' +
+      (ep ? '<p class="ep">' + esc(ep) + "</p>" : "") +
+      "<h1>" + esc(title) + "</h1>" +
+      (note ? '<p class="note">' + esc(note) + "</p>" : "") +
+    "</div>" + html.join("\n");
+
+  var blocks = Array.prototype.slice.call(doc.querySelectorAll("[data-i]"));
+
+  /* ---------- table of contents ---------- */
+  var tocEl = document.getElementById("toc");
+  var n = 0;
+  toc.forEach(function (t) {
+    var b = document.createElement("button");
+    b.dataset.act = t.act ? "1" : "0";
+    b.dataset.i = t.i;
+    if (t.act) b.textContent = t.label;
+    else {
+      n++;
+      b.innerHTML = "<span>" + n + "</span><span>" + t.label.replace(/&/g, "&amp;").replace(/</g, "&lt;") + "</span>";
+    }
+    tocEl.appendChild(b);
+  });
+
+  /* ---------- progress ---------- */
+  var fill = document.getElementById("fill"), mk = document.getElementById("mk");
+  var pct = document.getElementById("pct"), where = document.getElementById("where");
+  var resume = document.getElementById("resume");
+  var saved = null;
+  try { saved = JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) {}
+
+  function save(o) { try { localStorage.setItem(KEY, JSON.stringify(o)); } catch (e) {} }
+
+  function topBlock() {
+    var y = 90, best = 0;
+    for (var i = 0; i < blocks.length; i++) {
+      if (blocks[i].getBoundingClientRect().top - y <= 0) best = i; else break;
+    }
+    return best;
+  }
+  function actFor(i) {
+    var a = "";
+    for (var k = 0; k < toc.length; k++) { if (toc[k].i <= i) { if (toc[k].act) a = toc[k].label; } else break; }
+    return a;
+  }
+
+  var markIdx = saved && typeof saved.i === "number" ? saved.i : 0;
+  var furthest = saved && typeof saved.max === "number" ? saved.max : markIdx;
+  /* the spot you had when you opened the app -- fixed for this visit, so
+     wandering off to reread an earlier scene always has a way back. */
+  var openMark = markIdx, openOff = (saved && saved.off) || 0;
+
+  function paint() {
+    var i = topBlock();
+    var p = blocks.length > 1 ? i / (blocks.length - 1) : 0;
+    fill.style.width = (p * 100).toFixed(1) + "%";
+    pct.textContent = Math.round(p * 100) + "%";
+    where.textContent = actFor(i) || document.title;
+    if (i > furthest) furthest = i;
+    mk.style.left = (openMark / Math.max(1, blocks.length - 1) * 100) + "%";
+    mk.style.opacity = openMark > 0 ? ".9" : "0";
+    resume.dataset.show = (openMark > 0 && Math.abs(i - openMark) > 8) ? "1" : "0";
+  }
+
+  var t = null, idle = null;
+  function onScroll() {
+    if (t) return;
+    t = requestAnimationFrame(function () { t = null; paint(); });
+    clearTimeout(idle);
+    idle = setTimeout(commit, 400);
+  }
+  function commit() {
+    var i = topBlock();
+    markIdx = i;
+    var el = blocks[i];
+    var off = el ? el.getBoundingClientRect().top - 90 : 0;
+    save({ i: i, off: off, max: furthest, size: document.documentElement.dataset.size || "m", at: Date.now() });
+    paint();
+  }
+
+  function goto(i, off) {
+    var el = blocks[Math.max(0, Math.min(blocks.length - 1, i))];
+    if (!el) return;
+    var y = window.pageYOffset + el.getBoundingClientRect().top - 90 - (off || 0);
+    window.scrollTo({ top: Math.max(0, y), behavior: "auto" });
+  }
+
+  /* ---------- controls ---------- */
+  var sizes = ["s", "m", "l", "xl"];
+  document.documentElement.dataset.size = (saved && saved.size) || "m";
+  document.getElementById("type").addEventListener("click", function () {
+    var cur = sizes.indexOf(document.documentElement.dataset.size || "m");
+    var next = sizes[(cur + 1) % sizes.length];
+    var keep = topBlock();
+    document.documentElement.dataset.size = next;
+    goto(keep, 0);
+    commit();
+  });
+
+  var sheet = document.getElementById("sheet");
+  document.getElementById("menu").addEventListener("click", function () {
+    tocEl.querySelectorAll("button").forEach(function (b) {
+      b.dataset.read = (+b.dataset.i <= furthest) ? "1" : "0";
+    });
+    sheet.dataset.open = "1";
+  });
+  sheet.addEventListener("click", function (e) {
+    var b = e.target.closest("button");
+    sheet.dataset.open = "0";
+    if (b) { goto(+b.dataset.i, 0); commit(); }
+  });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") sheet.dataset.open = "0"; });
+
+  resume.addEventListener("click", function () {
+    goto(openMark, openOff);
+    commit();
+  });
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", paint);
+  document.addEventListener("visibilitychange", function () { if (document.hidden) commit(); });
+  window.addEventListener("pagehide", commit);
+
+  /* ---------- open where they left off ---------- */
+  if (saved && saved.i > 0) {
+    goto(saved.i, saved.off || 0);
+    setTimeout(function () { goto(saved.i, saved.off || 0); paint(); }, 60);
+  }
+  paint();
+})();
+</script>
