@@ -345,6 +345,7 @@
   function commit() {
     var i = topBlock();
     markIdx = i;
+    if (i > furthest) furthest = i;
     var el = blocks[i];
     var off = el ? el.getBoundingClientRect().top - 90 : 0;
     save({ i: i, off: off, max: furthest, size: document.documentElement.dataset.size || "m", at: Date.now() });
