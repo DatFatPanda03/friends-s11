@@ -115,6 +115,21 @@
     --faint: #6B6B6B; --rule: #DADADA; --accent: #1A1A1A; --accent-soft: #EFEFEF;
     --gold: #7A5A00; --on-accent: #FFFFFF; --shadow: 0 6px 28px rgba(0, 0, 0, .16);
   }
+  [data-theme="pine"] {
+    --ground: #0F1613; --raise: #17201B; --ink: #E2ECE4; --muted: #90A395;
+    --faint: #728478; --rule: #263029; --accent: #6FBF8B; --accent-soft: #1B2A20;
+    --gold: #C9A24A; --on-accent: #0F1613; --shadow: 0 6px 28px rgba(0, 0, 0, .55);
+  }
+  [data-theme="cobalt"] {
+    --ground: #0A1220; --raise: #101A2E; --ink: #E4EAF5; --muted: #8FA0BE;
+    --faint: #6E7F9C; --rule: #1D2A42; --accent: #5B8FF0; --accent-soft: #16223A;
+    --gold: #D8B24C; --on-accent: #0A1220; --shadow: 0 6px 28px rgba(0, 0, 0, .6);
+  }
+  [data-theme="ember"] {
+    --ground: #150C0D; --raise: #1F1315; --ink: #F0E1DF; --muted: #A9827E;
+    --faint: #8C6864; --rule: #341E1F; --accent: #E0524A; --accent-soft: #341A19;
+    --gold: #D9973F; --on-accent: #150C0D; --shadow: 0 6px 28px rgba(0, 0, 0, .6);
+  }
 
   :root[data-size="s"] { --size: .9375rem; }
   :root[data-size="l"] { --size: 1.1875rem; }
@@ -434,7 +449,32 @@
 
   var blocks = Array.prototype.slice.call(doc.querySelectorAll("[data-i]"));
 
-  /* ---------- table of contents ---------- */
+  /* ---------- table of contents ----------
+     Scene labels default to the slugline location, which repeats constantly
+     (five scenes are "Ross's apartment"). Swap in what actually happens,
+     in script order: teaser scene, Scene 1-13 (Scene 3 has two sluglines,
+     hallway then Apartment 20, so it gets two entries), tag scene. */
+  var sceneTitles = [
+    "You Got Off the Plane",
+    "Phoebe's New Schedule",
+    "The Welcome Basket",
+    "Joey Tries the Purple Door",
+    "Treeger Rented It",
+    "Emma's New Word",
+    "Rachel Confesses on the Couch",
+    "Ross Calls Mark",
+    "Nobody Knows What to Do",
+    "The Block Captain Vote",
+    "Joey Sleeps on the Floor",
+    "The Folder",
+    "Rachel Calls Paris",
+    "Pizza on the Floor",
+    "Same Time Next Thursday",
+    "Gunther Moves In"
+  ];
+  var sceneN = 0;
+  toc.forEach(function (t) { if (!t.act) t.label = sceneTitles[sceneN++] || t.label; });
+
   var tocEl = document.getElementById("toc");
   var n = 0;
   toc.forEach(function (t) {
@@ -527,7 +567,8 @@
     ["auto", "Auto — follows your system"],
     ["paper", "Paper"], ["night", "Night"], ["sepia", "Sepia"],
     ["newsprint", "Newsprint"], ["perk", "Perk"], ["gaslight", "Gaslight"],
-    ["moss", "Moss"], ["slate", "Slate"], ["rose", "Rose"], ["ivory", "Ivory"]
+    ["moss", "Moss"], ["slate", "Slate"], ["rose", "Rose"], ["ivory", "Ivory"],
+    ["pine", "Pine"], ["cobalt", "Cobalt"], ["ember", "Ember"]
   ];
 
   var swWrap = document.getElementById("swatches");
